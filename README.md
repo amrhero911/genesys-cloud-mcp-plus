@@ -6,9 +6,9 @@ A Model Context Protocol (MCP) server for Genesys Cloud’s Platform API.
 
 ## Tools
 
-| Tool                  | Permissions          | APIs used                                                                                                  |
-|-----------------------|----------------------|------------------------------------------------------------------------------------------------------------|
-| Search queues by name | `routing:queue:view` | [GET `/api/v2/routing/queues`](https://developer.genesys.cloud/routing/routing/#get-api-v2-routing-queues) |
+| Tool          | Permissions          | APIs used                                                                                                 |
+|---------------|----------------------|-----------------------------------------------------------------------------------------------------------|
+| Search Queues | `routing:queue:view` | [`GET /api/v2/routing/queues`](https://developer.genesys.cloud/routing/routing/#get-api-v2-routing-queues) |
 
 ## Getting Started
 

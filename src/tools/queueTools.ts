@@ -13,8 +13,8 @@ function hasIdAndName(
 
 export function queueTools(server: McpServer, routingApi: RoutingApi) {
   server.tool(
-    "search_queues_by_name",
-    "Searches a Genesys Cloud organisation for queues by name and returns the name and ID of the first 5 results.",
+    "search-queues",
+    "Searches a Queue by name. Returns queue name and ID of the first 5 results.",
     {
       name: z
         .string()

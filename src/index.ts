@@ -1,47 +1,72 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import platformClient from "purecloud-platform-client-v2";
-import { queueTools } from "./tools/queueTools";
-import { z } from "zod";
+import { withAuth } from "./withAuth.js";
+import { searchQueues } from "./tools/searchQueues.js";
+import { loadConfig } from "./loadConfig.js";
+import { sampleConversationsByQueue } from "./tools/sampleConversationsByQueue.js";
+import { queryQueueVolumes } from "./tools/queryQueueVolumes.js";
 
-const envConfigResult = z
-  .object({
-    GENESYSCLOUD_REGION: z.string({
-      required_error: "Missing environment variable: GENESYSCLOUD_REGION",
-    }),
-    GENESYSCLOUD_OAUTHCLIENT_ID: z.string({
-      required_error:
-        "Missing environment variable: GENESYSCLOUD_OAUTHCLIENT_ID",
-    }),
-    GENESYSCLOUD_OAUTHCLIENT_SECRET: z.string({
-      required_error:
-        "Missing environment variable: GENESYSCLOUD_OAUTHCLIENT_SECRET",
-    }),
-  })
-  .safeParse(process.env);
-
-if (!envConfigResult.success) {
-  console.error("Failed to parse environment variables");
-  for (const issue of envConfigResult.error.issues) {
-    console.error(issue.message);
-  }
+const configResult = loadConfig(process.env);
+if (!configResult.success) {
+  console.error(configResult.reason);
   process.exit(1);
 }
 
-const apiClient = platformClient.ApiClient.instance;
-
-apiClient.setEnvironment(envConfigResult.data.GENESYSCLOUD_REGION);
-await apiClient.loginClientCredentialsGrant(
-  envConfigResult.data.GENESYSCLOUD_OAUTHCLIENT_ID,
-  envConfigResult.data.GENESYSCLOUD_OAUTHCLIENT_SECRET,
-);
+const config = configResult.config;
 
 const server: McpServer = new McpServer({
   name: "Genesys Cloud",
   version: "0.0.1",
 });
 
-queueTools(server, new platformClient.RoutingApi());
+const searchQueuesTool = searchQueues({
+  routingApi: new platformClient.RoutingApi(),
+});
+server.tool(
+  searchQueuesTool.schema.name,
+  searchQueuesTool.schema.description,
+  searchQueuesTool.schema.paramsSchema.shape,
+  config.mockingEnabled
+    ? searchQueuesTool.mockCall
+    : withAuth(
+        searchQueuesTool.call,
+        config.genesysCloud,
+        platformClient.ApiClient.instance,
+      ),
+);
+
+const queryConversationsByQueueTool = sampleConversationsByQueue({
+  analyticsApi: new platformClient.AnalyticsApi(),
+});
+server.tool(
+  queryConversationsByQueueTool.schema.name,
+  queryConversationsByQueueTool.schema.description,
+  queryConversationsByQueueTool.schema.paramsSchema.shape,
+  config.mockingEnabled
+    ? queryConversationsByQueueTool.mockCall
+    : withAuth(
+        queryConversationsByQueueTool.call,
+        config.genesysCloud,
+        platformClient.ApiClient.instance,
+      ),
+);
+
+const queryQueueVolumesTool = queryQueueVolumes({
+  analyticsApi: new platformClient.AnalyticsApi(),
+});
+server.tool(
+  queryQueueVolumesTool.schema.name,
+  queryQueueVolumesTool.schema.description,
+  queryQueueVolumesTool.schema.paramsSchema.shape,
+  config.mockingEnabled
+    ? queryQueueVolumesTool.mockCall
+    : withAuth(
+        queryQueueVolumesTool.call,
+        config.genesysCloud,
+        platformClient.ApiClient.instance,
+      ),
+);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

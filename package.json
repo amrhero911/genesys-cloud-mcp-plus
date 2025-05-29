@@ -1,6 +1,6 @@
 {
   "name": "@makingchatbots/genesys-cloud-mcp-server",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A MCP server for connecting LLMs to Genesys Cloud's Platform API",
   "exports": "./dist/index.js",
   "type": "module",
@@ -19,8 +19,9 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
+    "start:inspector": "npm run build && npx @modelcontextprotocol/inspector node dist/index.js",
     "clean": "rm -rf dist/*",
-    "build:esm": "tsc",
+    "build:esm": "tsc -p tsconfig.build.json",
     "build": "npm run clean && npm run build:esm",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",

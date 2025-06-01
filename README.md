@@ -17,6 +17,7 @@ in the [tools doc](/docs/tools.md).
 | [Sample Conversations By Queue](/docs/tools.md#sample-conversations-by-queue) | Retrieves a representative sample of Conversation IDs for a Queue ID     |
 | [Voice Call Quality](/docs/tools.md#voice-call-quality)                       | Retrieves voice call quality metrics for one or more conversations by ID |
 | [Conversation Sentiment](/docs/tools.md#conversation-sentiment)               | Retrieves the sentiment for one or more conversations by ID              |
+| [Conversation Topics](/docs/tools.md#conversation-topics)                     | Retrieves the topics for a conversation by ID                            |
 
 ## Authentication
 

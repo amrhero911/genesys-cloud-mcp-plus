@@ -44,6 +44,13 @@ describe("Server Runs", () => {
       "conversation_topics",
       "search_voice_conversations",
       "conversation_transcript",
+      "agent_status_monitoring",
+      "enhanced_conversation_search",
+      "agent_media_type_performance",
+      "real_time_queue_status",
+      "real_time_agent_presence",
+      "live_conversation_monitoring",
+      "wrap_up_code_analytics",
     ]);
   });
 

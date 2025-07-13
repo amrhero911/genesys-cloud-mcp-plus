@@ -1,70 +1,221 @@
-# Genesys Cloud MCP Server
+# Genesys Cloud MCP Plus
 
-[![npm](https://img.shields.io/npm/v/@makingchatbots/genesys-cloud-mcp-server)](https://www.npmjs.com/package/@makingchatbots/genesys-cloud-mcp-server)
-[![Follow me on LinkedIn for updates](https://img.shields.io/badge/Follow%20for%20updates-LinkedIn-blue)](https://www.linkedin.com/in/lucas-woodward-the-dev/)
+🚀 **Advanced Model Context Protocol Server for Genesys Cloud**
 
-A Model Context Protocol (MCP) server for Genesys Cloud's Platform API.
+A comprehensive MCP server providing 15 powerful tools for contact center analytics, real-time monitoring, and intelligent conversation analysis. Designed for enterprise-grade AI applications with full omnichannel support.
 
-## Features
+## 🌟 Features
 
-| Tool                                                                          | Description                                                              |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [Search Queues](/docs/tools.md#search-queues)                                 | Searches for queues by their name (supports wildcards)                   |
-| [Query Queue Volumes](/docs/tools.md#query-queue-volumes)                     | Retrieves conversation volumes and member count by Queue IDs             |
-| [Sample Conversations By Queue](/docs/tools.md#sample-conversations-by-queue) | Retrieves a representative sample of Conversation IDs for a Queue ID     |
-| [Voice Call Quality](/docs/tools.md#voice-call-quality)                       | Retrieves voice call quality metrics for one or more conversations by ID |
-| [Conversation Sentiment](/docs/tools.md#conversation-sentiment)               | Retrieves the sentiment for one or more conversations by ID              |
-| [Conversation Topics](/docs/tools.md#conversation-topics)                     | Retrieves the topics for a conversation by ID                            |
-| [Search Voice Conversation](/docs/tools.md#search-voice-conversations)        | Searches voice conversations by optional criteria                        |
-| [Conversation Transcript](/docs/tools.md#conversation-transcript)             | Retrieves conversation transcript                                        |
+### 📊 **Historical Analytics (8 Tools)**
+- **Queue Volume Analysis** - Compare conversation volumes across queues
+- **Conversation Sampling** - Retrieve representative conversation samples
+- **Voice Call Quality** - Analyze MOS scores and call quality metrics
+- **Conversation Sentiment** - Sentiment analysis across interactions
+- **Conversation Topics** - Extract business topics and intents
+- **Conversation Transcripts** - Full conversation transcripts with timestamps
+- **Enhanced Media Search** - Multi-channel conversation discovery
+- **Agent Performance Analytics** - Media-type breakdown of agent metrics
 
-## Usage with Claude Desktop
+### ⚡ **Real-Time Monitoring (3 Tools)**
+- **Live Queue Status** - Real-time queue metrics and agent availability
+- **Agent Presence Monitoring** - Current agent status and routing state
+- **Active Conversation Tracking** - Monitor ongoing customer interactions
 
-Add this to your `claude_desktop_config.json`:
+### 🏷️ **Wrap-Up Code Analytics (1 Tool)**
+- **Comprehensive Wrap-Up Analysis** - Understand interaction types and volumes
+- **Multi-language Support** - Handles Arabic/English bilingual environments
+- **Queue-specific Filtering** - Targeted analysis by queue or service area
 
-### NPX
+### 🔍 **Utility Tools (3 Tools)**
+- **Queue Search** - Find queues by name with wildcard support
+- **Agent Directory** - Monitor agent information and status
+- **Enhanced Conversation Search** - Advanced filtering across all media types
 
+## 📋 **Supported Media Types**
+- 📞 Voice calls
+- 💬 Chat interactions  
+- 📧 Email conversations
+- 📱 SMS/Text messaging
+- 🤖 Bot interactions
+- 📹 Video calls
+- 🌐 Social media interactions
+- 📞 Callback requests
+
+## 🛠️ Installation
+
+### NPM Installation
+```bash
+npm install -g genesys-cloud-mcp-plus
+```
+
+### Manual Installation
+```bash
+git clone https://github.com/MakingChatbots/genesys-cloud-mcp-server.git
+cd genesys-cloud-mcp-server
+npm install
+npm run build
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+```bash
+export GENESYSCLOUD_REGION="your-region"  # e.g., "mypurecloud.de", "mypurecloud.com"
+export GENESYSCLOUD_OAUTHCLIENT_ID="your-client-id"
+export GENESYSCLOUD_OAUTHCLIENT_SECRET="your-client-secret"
+```
+
+### Supported Regions
+- `mypurecloud.com` (Americas)
+- `mypurecloud.de` (EMEA)
+- `mypurecloud.ie` (Ireland)
+- `mypurecloud.com.au` (APAC)
+- `mypurecloud.jp` (Japan)
+
+### OAuth Permissions Required
+Your OAuth client needs these permissions:
+- `analytics:conversationAggregate:view`
+- `analytics:conversationDetail:view`
+- `routing:queue:view`
+- `users:basic:view`
+- `presence:basic:view`
+- `speechandtextanalytics:data:view`
+
+## 🚀 Usage
+
+### Claude Desktop Integration
+Add to your Claude Desktop configuration:
 ```json
 {
   "mcpServers": {
-    "genesys-cloud": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@makingchatbots/genesys-cloud-mcp-server"],
+    "genesys-cloud-mcp-plus": {
+      "command": "genesys-cloud-mcp-plus",
       "env": {
-        "GENESYSCLOUD_REGION": "<PUT REGION HERE>",
-        "GENESYSCLOUD_OAUTHCLIENT_ID": "<PUT OAUTHCLIENT ID HERE>",
-        "GENESYSCLOUD_OAUTHCLIENT_SECRET": "<PUT OAUTHCLIENT SECRET HERE>"
+        "GENESYSCLOUD_REGION": "mypurecloud.de",
+        "GENESYSCLOUD_OAUTHCLIENT_ID": "your-client-id",
+        "GENESYSCLOUD_OAUTHCLIENT_SECRET": "your-client-secret"
       }
     }
   }
 }
 ```
 
-## Authentication
-
-This currently only supports a stdio server. To configure authentication you'll need to:
-
-1. Create an OAuth Client in Genesys Cloud
-2. Assign the permissions to it for the tools you want to be used
-3. Provide the following environment variables when referencing the server:
-   - `GENESYSCLOUD_REGION`
-   - `GENESYSCLOUD_OAUTHCLIENT_ID`
-   - `GENESYSCLOUD_OAUTHCLIENT_SECRET`
-
-## Development
-
-### Getting Started
-
+### Command Line
 ```bash
-nvm use
-npm install
+# Start the MCP server
+genesys-cloud-mcp-plus
+
+# Development mode
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-## Under active development
+## 📚 Tool Reference
 
-This is part of [personal project](https://www.linkedin.com/posts/lucas-woodward-the-dev_genesys-genesyscloud-vertexai-activity-7321306518908280833-cWt8?utm_source=share&utm_medium=member_desktop&rcm=ACoAABsbo2wBcmnNqxYJ5UO9BrsfURZcVEtgLOU)
-to create a conversational Business Insights tool. It is a practical way for me to learn MCP servers, and how best to represent Genesys Cloud's Platform APIs in a way that can be easily consumed by LLMs.
+### Historical Analytics
+| Tool | Purpose | Use Case |
+|------|---------|----------|
+| `search_queues` | Find queues by name | "Find all sales queues" |
+| `query_queue_volumes` | Compare queue volumes | "Which queue is busiest today?" |
+| `sample_conversations_by_queue` | Get conversation samples | "Show me recent support calls" |
+| `voice_call_quality` | Analyze call quality | "Check call quality for conversation X" |
+| `conversation_sentiment` | Sentiment analysis | "What's the sentiment of these calls?" |
+| `conversation_topics` | Topic detection | "What topics were discussed?" |
+| `conversation_transcript` | Full transcripts | "Get transcript for conversation X" |
+| `enhanced_conversation_search` | Multi-media search | "Find all chat conversations today" |
 
-There will be a lot of changes, and I will be sure to [share my learnings in my newsletter](https://makingchatbots.com/).
+### Real-Time Monitoring  
+| Tool | Purpose | Use Case |
+|------|---------|----------|
+| `real_time_queue_status` | Live queue metrics | "How many agents are available?" |
+| `real_time_agent_presence` | Agent status monitoring | "Who's online right now?" |
+| `live_conversation_monitoring` | Active interactions | "What conversations are happening?" |
+
+### Analytics & Insights
+| Tool | Purpose | Use Case |
+|------|---------|----------|
+| `wrap_up_code_analytics` | Interaction type analysis | "How many inquiries came today?" |
+| `agent_media_type_performance` | Agent performance by channel | "How is John performing on chat?" |
+| `agent_status_monitoring` | Agent directory | "Show me all active agents" |
+| `search_voice_conversations` | Voice-specific search | "Find voice calls from this number" |
+
+## 🔍 Example Queries
+
+### Business Intelligence
+```
+"What were the top 3 wrap-up codes for our support queue this week?"
+"Which agents handled the most chat conversations yesterday?"
+"Show me sentiment analysis for all conversations from customer X"
+```
+
+### Operations Monitoring
+```
+"How many agents are currently available?"
+"What conversations are active right now?"
+"Which queue has the longest wait times?"
+```
+
+### Quality Assurance
+```
+"Find conversations with poor call quality scores"
+"What topics are customers asking about most?"
+"Show me transcripts from escalated calls"
+```
+
+## 🛡️ Enterprise Features
+
+- **🔒 Secure Authentication** - OAuth 2.0 with client credentials
+- **🌍 Multi-Region Support** - Works with all Genesys Cloud regions
+- **🗣️ Multi-Language** - Supports bilingual environments (Arabic/English)
+- **📊 Comprehensive Analytics** - 15 different analytical perspectives
+- **⚡ Real-Time Data** - Live monitoring capabilities
+- **🔧 Production Ready** - Error handling, logging, and retry logic
+
+## 📖 Documentation
+
+- [AI Agent Guide](./AI_AGENT_GUIDE.md) - Complete guide for AI implementations
+- [Changelog](./CHANGELOG.md) - Version history and new features
+- [API Reference](./docs/API.md) - Detailed tool documentation
+
+## 👥 Authors & Contributors
+
+### Original Author
+**Lucas Woodward** - [MakingChatbots.com](https://makingchatbots.com)
+- Created the foundational MCP server with 8 core analytics tools
+- Established the original architecture and Genesys Cloud integration
+
+### Enhanced Version
+**Amr Khalil**
+- Added 7 new tools including real-time monitoring and wrap-up code analytics
+- Enhanced existing tools with improved error handling and performance
+- Transformed basic server into comprehensive enterprise-grade platform
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📝 License
+
+ISC License - see [LICENSE](./LICENSE) for details.
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/MakingChatbots/genesys-cloud-mcp-server)
+- [NPM Package](https://www.npmjs.com/package/genesys-cloud-mcp-plus)
+- [MakingChatbots.com](https://makingchatbots.com)
+
+## 📞 Support
+
+For issues, questions, or feature requests:
+- GitHub Issues: [Report here](https://github.com/MakingChatbots/genesys-cloud-mcp-server/issues)
+- Documentation: Check the AI Agent Guide for implementation details
+
+---
+
+**Built with ❤️ for the AI and Contact Center Community**

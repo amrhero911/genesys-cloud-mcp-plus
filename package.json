@@ -1,7 +1,7 @@
 {
-  "name": "@makingchatbots/genesys-cloud-mcp-server",
-  "version": "0.0.13",
-  "description": "A Model Context Protocol (MCP) server exposing Genesys Cloud tools for LLMs, including sentiment analysis, conversation search, topic detection and more.",
+  "name": "genesys-cloud-mcp-plus",
+  "version": "1.0.0",
+  "description": "Genesys Cloud MCP Plus - Advanced Model Context Protocol server with 15 comprehensive tools for contact center analytics, real-time monitoring, and wrap-up code analysis. Enhanced with multi-media support and enterprise-grade features.",
   "bin": "./dist/cli.js",
   "type": "module",
   "license": "ISC",
@@ -14,8 +14,20 @@
   },
   "homepage": "https://makingchatbots.com",
   "author": {
-    "name": "Lucas Woodward"
+    "name": "Lucas Woodward",
+    "url": "https://makingchatbots.com"
   },
+  "contributors": [
+    {
+      "name": "Lucas Woodward",
+      "url": "https://makingchatbots.com",
+      "role": "Original Author - Created foundational MCP server with 8 core tools"
+    },
+    {
+      "name": "Amr Khalil",
+      "role": "Enhanced Version - Added 7 new tools, real-time monitoring, and enterprise features"
+    }
+  ],
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
@@ -86,6 +98,14 @@
     "genesys-cloud",
     "speech-and-text-analytics",
     "sentiment-analysis",
-    "conversation-analysis"
+    "conversation-analysis",
+    "contact-center",
+    "real-time-monitoring",
+    "wrap-up-codes",
+    "multi-media-analytics",
+    "agent-performance",
+    "queue-analytics",
+    "enterprise-grade",
+    "omnichannel"
   ]
 }

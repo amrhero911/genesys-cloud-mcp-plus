@@ -10,6 +10,13 @@ import { conversationSentiment } from "./tools/conversationSentiment/conversatio
 import { conversationTopics } from "./tools/conversationTopics/conversationTopics.js";
 import { searchVoiceConversations } from "./tools/searchVoiceConversations.js";
 import { conversationTranscription } from "./tools/conversationTranscription/conversationTranscription.js";
+import { agentStatusMonitoring } from "./tools/agentStatusMonitoring.js";
+import { enhancedConversationSearch } from "./tools/enhancedConversationSearch.js";
+import { agentMediaTypePerformance } from "./tools/agentMediaTypePerformance.js";
+import { realTimeQueueStatus } from "./tools/realTimeQueueStatus.js";
+import { realTimeAgentPresence } from "./tools/realTimeAgentPresence.js";
+import { liveConversationMonitoring } from "./tools/liveConversationMonitoring.js";
+import { wrapUpCodeAnalytics } from "./tools/wrapUpCodeAnalytics.js";
 import { OAuthClientCredentialsWrapper } from "./auth/OAuthClientCredentialsWrapper.js";
 
 const withAuth = OAuthClientCredentialsWrapper(
@@ -19,13 +26,16 @@ const withAuth = OAuthClientCredentialsWrapper(
 
 const server: McpServer = new McpServer({
   name: "Genesys Cloud",
-  version: "0.0.13", // Same version as version in package.json
+  version: "1.0.0", // Production release version
 });
 
 const routingApi = new platformClient.RoutingApi();
 const analyticsApi = new platformClient.AnalyticsApi();
 const speechTextAnalyticsApi = new platformClient.SpeechTextAnalyticsApi();
 const recordingApi = new platformClient.RecordingApi();
+const usersApi = new platformClient.UsersApi();
+const presenceApi = new platformClient.PresenceApi();
+const conversationsApi = new platformClient.ConversationsApi();
 
 const searchQueuesTool = searchQueues({ routingApi });
 server.tool(
@@ -110,6 +120,76 @@ server.tool(
   conversationTranscriptTool.schema.paramsSchema.shape,
   conversationTranscriptTool.schema.annotations,
   withAuth(conversationTranscriptTool.call),
+);
+
+const agentStatusMonitoringTool = agentStatusMonitoring({
+  usersApi,
+  analyticsApi,
+});
+server.tool(
+  agentStatusMonitoringTool.schema.name,
+  agentStatusMonitoringTool.schema.description,
+  agentStatusMonitoringTool.schema.paramsSchema.shape,
+  agentStatusMonitoringTool.schema.annotations,
+  withAuth(agentStatusMonitoringTool.call),
+);
+
+const enhancedConversationSearchTool = enhancedConversationSearch({ analyticsApi });
+server.tool(
+  enhancedConversationSearchTool.schema.name,
+  enhancedConversationSearchTool.schema.description,
+  enhancedConversationSearchTool.schema.paramsSchema.shape,
+  enhancedConversationSearchTool.schema.annotations,
+  withAuth(enhancedConversationSearchTool.call),
+);
+
+
+
+const agentMediaTypePerformanceTool = agentMediaTypePerformance({ analyticsApi, usersApi });
+server.tool(
+  agentMediaTypePerformanceTool.schema.name,
+  agentMediaTypePerformanceTool.schema.description,
+  agentMediaTypePerformanceTool.schema.paramsSchema.shape,
+  agentMediaTypePerformanceTool.schema.annotations,
+  withAuth(agentMediaTypePerformanceTool.call),
+);
+
+// Real-Time Monitoring Tools
+const realTimeQueueStatusTool = realTimeQueueStatus({ routingApi, analyticsApi, presenceApi });
+server.tool(
+  realTimeQueueStatusTool.schema.name,
+  realTimeQueueStatusTool.schema.description,
+  realTimeQueueStatusTool.schema.paramsSchema.shape,
+  realTimeQueueStatusTool.schema.annotations,
+  withAuth(realTimeQueueStatusTool.call),
+);
+
+const realTimeAgentPresenceTool = realTimeAgentPresence({ presenceApi, usersApi });
+server.tool(
+  realTimeAgentPresenceTool.schema.name,
+  realTimeAgentPresenceTool.schema.description,
+  realTimeAgentPresenceTool.schema.paramsSchema.shape,
+  realTimeAgentPresenceTool.schema.annotations,
+  withAuth(realTimeAgentPresenceTool.call),
+);
+
+const liveConversationMonitoringTool = liveConversationMonitoring({ analyticsApi, conversationsApi });
+server.tool(
+  liveConversationMonitoringTool.schema.name,
+  liveConversationMonitoringTool.schema.description,
+  liveConversationMonitoringTool.schema.paramsSchema.shape,
+  liveConversationMonitoringTool.schema.annotations,
+  withAuth(liveConversationMonitoringTool.call),
+);
+
+// Register wrap-up code analytics tool
+const wrapUpCodeAnalyticsTool = wrapUpCodeAnalytics({ analyticsApi });
+server.tool(
+  wrapUpCodeAnalyticsTool.schema.name,
+  wrapUpCodeAnalyticsTool.schema.description,
+  wrapUpCodeAnalyticsTool.schema.paramsSchema.shape,
+  wrapUpCodeAnalyticsTool.schema.annotations,
+  withAuth(wrapUpCodeAnalyticsTool.call),
 );
 
 const transport = new StdioServerTransport();
